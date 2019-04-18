@@ -30,7 +30,7 @@ class QRScanPage extends StatefulWidget {
 }
 
 class _QRScanPageState extends State<QRScanPage> {
-  Future<String> _barcodeString;
+  Future<String> _qrcodeValue;
 
   @override
   Widget build(BuildContext context) {
@@ -40,22 +40,27 @@ class _QRScanPageState extends State<QRScanPage> {
       ),
       body: new Center(
           child: new FutureBuilder<String>(
-              future: _barcodeString,
+              future: _qrcodeValue,
               builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-                return new Text(snapshot.data != null ? snapshot.data : '');
+                return new Text(snapshot.data != null ? snapshot.data : 'Get ready and tap Scan it');
               })),
       floatingActionButton: new FloatingActionButton(
         onPressed: () {
-          setState(() {
-            _barcodeString = new QRCodeReader()
-                .setAutoFocusIntervalInMs(200)
-                .setForceAutoFocus(true)
-                .setTorchEnabled(true)
-                .setHandlePermissions(true)
-                .setExecuteAfterPermissionGranted(true)
-                .scan();
-          });
-        },
+          _qrcodeValue = new QRCodeReader()
+              .setAutoFocusIntervalInMs(200)
+              .setForceAutoFocus(true)
+              .setTorchEnabled(true)
+              .setHandlePermissions(true)
+              .setExecuteAfterPermissionGranted(true)
+              .scan();
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+//                builder: (context) => UserActionPage(qrCodeValue: this._qrcodeValue),
+//                builder: (context) =>  MaterialPageRoute(builder: (context) => LendingBook()),
+
+              ));
+          },
         tooltip: 'Scan It',
         child: new Icon(Icons.camera_alt),
       ),
