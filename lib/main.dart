@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_3m/qrcode_reader.dart';
 
 void main() => runApp(MyApp());
 
@@ -7,7 +8,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Tyme Treasury',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Tyme Treasury'),
     );
   }
 }
@@ -44,7 +45,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
 
   void _incrementCounter() {
     setState(() {
@@ -53,7 +53,6 @@ class _MyHomePageState extends State<MyHomePage> {
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      _counter++;
     });
   }
 
@@ -92,19 +91,20 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
+              'Hi @user\nYou have logged in', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline,
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => QRScanPage()),
+          );
+        },
+        tooltip: 'Next',
+        child: Icon(Icons.forward),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
