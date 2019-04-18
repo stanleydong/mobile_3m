@@ -27,3 +27,19 @@ subprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+/// Try overwrite build lib qr_code_reader
+/// TODO try to autoamtically overwirte qrcode_reader complieSdk
+//apply plugin: 'com.android.library'
+//
+//android {
+//    compileSdkVersion 28
+////    buildToolsVersion '25.0.3'
+//
+//    defaultConfig {
+//        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+//    }
+//    lintOptions {
+//        disable 'InvalidPackage'
+//    }
+//}

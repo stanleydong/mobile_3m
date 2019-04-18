@@ -1,6 +1,6 @@
 # mobile_3m
 
-A new Flutter application.
+Tyme Book application built with Flutter.
 
 ## Getting Started
 
