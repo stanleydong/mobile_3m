@@ -46,13 +46,11 @@ class _QRScanPageState extends State<QRScanPage> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    UserActionPage(qrCodeValue: this._qrcodeValue),
+//                builder: (context) => UserActionPage(qrCodeValue: this._qrcodeValue),
+//                builder: (context) =>  MaterialPageRoute(builder: (context) => LendingBook()),
+
               ));
-          setState(() {
-//            Do something if needed
-          });
-        },
+          },
         tooltip: 'Scan It',
         child: new Icon(Icons.camera_alt),
       ),

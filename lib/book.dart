@@ -3,42 +3,27 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:qrcode_reader/qrcode_reader.dart';
 
-void main() {
-  runApp(new MyApp());
-}
-
 final dummyBook = [
   {
-    "status": false,
-    "id": 1,
+    "status": "false",
+    "id": "1",
     "title": "Hackaton",
     "bookRefId": "-Lcj_KLDFuqdYuqdggkp"
   }
 ];
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: 'QRCode Reader Demo',
-      home: new LendingBook(),
-    );
-  }
-}
-
-class LendingBook extends StatefulWidget {
-  LendingBook({Key key, this.title}) : super(key: key);
+class Book extends StatefulWidget {
+  Book({Key key, this.title}) : super(key: key);
 
   final String title;
 
   final Map<String, dynamic> pluginParameters = {};
 
   @override
-  _LendingBookState createState() => new _LendingBookState();
+  _BookState createState() => new _BookState();
 }
 
-class _LendingBookState extends State<LendingBook> {
-
+class _BookState extends State<Book> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -46,6 +31,7 @@ class _LendingBookState extends State<LendingBook> {
       body: _buildBody(context),
     );
   }
+
   Widget _buildBody(BuildContext context) {
     // TODO: get actual snapshot from Cloud Firestore
     return _buildList(context, dummyBook);
@@ -59,7 +45,7 @@ class _LendingBookState extends State<LendingBook> {
   }
 
   Widget _buildListItem(BuildContext context, Map data) {
-    final book = Book.fromMap(data);
+    final book = _Book.fromMap(data);
 
     return Padding(
       key: ValueKey(book.title),
@@ -76,15 +62,15 @@ class _LendingBookState extends State<LendingBook> {
         ),
       ),
     );
+  }
+}
 
-}}
-
-class Book {
+class _Book {
   final String id;
   final String title;
   final String status;
 
-  Book.fromMap(Map<String, dynamic> map)
+  _Book.fromMap(Map<String, dynamic> map)
       : assert(map['id'] != null),
         assert(map['title'] != null),
         id = map['id'],
