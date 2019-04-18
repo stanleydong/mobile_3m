@@ -2,28 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:qrcode_reader/qrcode_reader.dart';
-
-void main() {
-  runApp(new MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: 'QRCode Reader Demo',
-      home: new QRScanPage(),
-    );
-  }
-}
+import 'package:mobile_3m/user_action.dart';
 
 class QRScanPage extends StatefulWidget {
-  QRScanPage({Key key, this.title}) : super(key: key);
+  QRScanPage({Key key, this.qrCodeValue}) : super(key: key);
 
-  final String title;
+  final String qrCodeValue;
 
-  final Map<String, dynamic> pluginParameters = {
-  };
+  final Map<String, dynamic> pluginParameters = {};
 
   @override
   _QRScanPageState createState() => new _QRScanPageState();
@@ -39,11 +25,15 @@ class _QRScanPageState extends State<QRScanPage> {
         title: const Text('Get ready'),
       ),
       body: new Center(
-          child: new FutureBuilder<String>(
-              future: _qrcodeValue,
-              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-                return new Text(snapshot.data != null ? snapshot.data : 'Get ready and tap Scan it');
-              })),
+        child: new FutureBuilder<String>(
+            future: _qrcodeValue,
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              return new Text(snapshot.data != null
+                  ? snapshot.data
+                  : 'Scan it by press Scan button');
+            }),
+
+      ),
       floatingActionButton: new FloatingActionButton(
         onPressed: () {
           _qrcodeValue = new QRCodeReader()
@@ -56,9 +46,7 @@ class _QRScanPageState extends State<QRScanPage> {
           Navigator.push(
               context,
               MaterialPageRoute(
-//                builder: (context) => UserActionPage(qrCodeValue: this._qrcodeValue),
-//                builder: (context) =>  MaterialPageRoute(builder: (context) => LendingBook()),
-
+                builder: (context) => UserActionPage(qrCodeValue: this._qrcodeValue),
               ));
           },
         tooltip: 'Scan It',
