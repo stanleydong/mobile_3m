@@ -101,8 +101,8 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () {
           Navigator.push(
             context,
-//            MaterialPageRoute(builder: (context) => QRScanPage()),
-            MaterialPageRoute(builder: (context) => Book()),
+            MaterialPageRoute(builder: (context) => QRScanPage()),
+//            MaterialPageRoute(builder: (context) => Book()),
           );
         },
         tooltip: 'Next',

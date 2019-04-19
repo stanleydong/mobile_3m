@@ -36,13 +36,16 @@ class _QRScanPageState extends State<QRScanPage> {
       ),
       floatingActionButton: new FloatingActionButton(
         onPressed: () {
-          _qrcodeValue = new QRCodeReader()
-              .setAutoFocusIntervalInMs(200)
-              .setForceAutoFocus(true)
-              .setTorchEnabled(true)
-              .setHandlePermissions(true)
-              .setExecuteAfterPermissionGranted(true)
-              .scan();
+//          _qrcodeValue = new Future.value(FutureOr<String>( "-Lcj_KLDFuqdYuqdggkp" ) ;
+          _qrcodeValue = new Future<String>.value("-Lcj_KLDFuqdYuqdggkp");
+//          TODO switch-on QRScanner
+//          _qrcodeValue = new QRCodeReader()
+//              .setAutoFocusIntervalInMs(200)
+//              .setForceAutoFocus(true)
+//              .setTorchEnabled(true)
+//              .setHandlePermissions(true)
+//              .setExecuteAfterPermissionGranted(true)
+//              .scan();
           Navigator.push(
               context,
               MaterialPageRoute(
