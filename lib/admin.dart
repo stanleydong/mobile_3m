@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_3m/qrcode_reader.dart';
 
 void main() {
   runApp(new MyApp());
@@ -55,6 +56,17 @@ class _AdminPageState extends State<AdminPage> {
               Icon(Icons.bookmark_border),
             ],
           ),
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+//            MaterialPageRoute(builder: (context) => QRScanPage()),
+                MaterialPageRoute(builder: (context) => QRScanPage()),
+              );
+            },
+            tooltip: 'Next',
+            child: Icon(Icons.arrow_back),
           ),
         ),
       ),

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer';
+import 'package:mobile_3m/success.dart';
 
 void main() {
   runApp(new MyApp());
@@ -33,6 +34,7 @@ class LendingBook extends StatefulWidget {
   final Map<String, dynamic> pluginParameters = {};
 
   Book ourbook;
+
   @override
   _LendingBookState createState() => new _LendingBookState();
 }
@@ -41,9 +43,8 @@ class _LendingBookState extends State<LendingBook> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: AppBar(title: Text("Proccess screen")),
-      body: _buildBody(context)
-    );
+        appBar: AppBar(title: Text("Proccess screen")),
+        body: _buildBody(context));
   }
 
   Widget _buildBody(BuildContext context) {
@@ -70,48 +71,69 @@ class _LendingBookState extends State<LendingBook> {
     DocumentSnapshot thisbook = snapshot.removeLast();
     _buildListItem(context, thisbook);
     Book newbook = widget.ourbook;
-    if(newbook.type.contains("shirt")) {
+    if (newbook.type.contains("shirt")) {
       return new Container(
         padding: new EdgeInsets.all(32.0),
         child: new Center(
           child: new Column(
             children: <Widget>[
               _buildListItem(context, thisbook),
-              new FlatButton(onPressed: () {
-                processItem("take");
-              }, child: new Text('Take'))
-
+              new FlatButton(
+                  onPressed: () {
+                    processItem("take");
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SuccessPage(),
+                        ));
+                  },
+                  child: new Text('Take'))
             ],
           ),
         ),
       );
     } else {
-    return new Container(
-      padding: new EdgeInsets.all(32.0),
-      child: new Center(
-        child: new Column(
-          children: <Widget>[
-            _buildListItem(context, thisbook),
-            //dart treates everything as objects so we pass a function in onPressed value
-            new FlatButton(onPressed: () {
-              processItem("borrow");
-            }, child: new Text('Borrow')),
-            new FlatButton(onPressed: () {
-              processItem("return");
-            }, child: new Text('Return'))
-          ],
+      return new Container(
+        padding: new EdgeInsets.all(32.0),
+        child: new Center(
+          child: new Column(
+            children: <Widget>[
+              _buildListItem(context, thisbook),
+              //dart treates everything as objects so we pass a function in onPressed value
+              new FlatButton(
+                  onPressed: () {
+                    processItem("borrow");
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SuccessPage(),
+                        ));
+                  },
+                  child: new Text('Borrow')),
+              new FlatButton(
+                onPressed: () {
+                  processItem("return");
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SuccessPage(),
+                      ));
+                },
+                child: new Text('Return'),
+              )
+            ],
+          ),
         ),
-      ),
-    );
+      );
     }
-      ListView(
+    ListView(
       padding: const EdgeInsets.only(top: 20.0),
       children: snapshot.map((data) => _buildListItem(context, data)).toList(),
     );
-
   }
 
   void calculateWindow() {}
+
   void processItem(String type) {
     var now = new DateTime.now();
     Book book = this.widget.ourbook;
@@ -120,7 +142,7 @@ class _LendingBookState extends State<LendingBook> {
         "user": {
           "email": "test_user@tyme.com",
           "id": 1,
-          "fullName": "Test User",
+          "fullName": "Mr Donut",
           "phoneNumber": "0987654321"
         },
         "id": 2,
@@ -143,7 +165,8 @@ class _LendingBookState extends State<LendingBook> {
   Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
     final book = Book.fromSnapshot(data);
     widget.ourbook = book;
-    return Text(book.toString());/*
+    return Text(book.toString());
+    /*
      ListView(
       // Center is a layout widget. It takes a single child and positions it
       // in the middle of the parent.

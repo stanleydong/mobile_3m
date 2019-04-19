@@ -48,7 +48,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   TextEditingController controller = TextEditingController();
   var _textUserName = new TextEditingController();
-  var _textPassword = new TextEditingController();
   final bool obscureText = true;
   @override
   Widget build(BuildContext context) {
@@ -65,7 +64,9 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: new Text(widget.title),
       ),
-      body: new ListView(
+      body: new Center(
+        child: new Column(
+         mainAxisAlignment: MainAxisAlignment.center,
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         children: <Widget>[
@@ -111,6 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 }),
           ),
         ],
+        ),
 //        child: Column(
 
 //        ),

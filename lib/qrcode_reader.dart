@@ -39,16 +39,19 @@ class _QRScanPageState extends State<QRScanPage> {
         title: const Text('Get ready'),
       ),
 
-      body: new ListView(
+      body: new Center(
+        child: new Column(
+    mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           new FutureBuilder<String>(
             future: _qrcodeValue,
             builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
               return new Text(snapshot.data != null ?
-                snapshot.data : 'Hello '+ ("${widget.valueUserName}") +' \nGet ready and tap Scan it',
+                snapshot.data : 'Hello Mr Donut \nGet ready and tap Scan it',
                   textAlign: TextAlign.center,style: Theme.of(context).textTheme.headline);
           }),
         ]),
+      ),
 //          child: new FutureBuilder<String>(
 //              future: _qrcodeValue,
 //              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
