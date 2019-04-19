@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:qrcode_reader/qrcode_reader.dart';
+import 'package:mobile_3m/book.dart';
 
 void main() {
   runApp(new MyApp());
@@ -55,7 +56,7 @@ class _QRScanPageState extends State<QRScanPage> {
 //                return new Text(snapshot.data != null ? snapshot.data : 'Get ready and tap Scan it' );
 //              })),
       floatingActionButton: new FloatingActionButton(
-        onPressed: () {
+        onPressed: () async {
 //          _qrcodeValue = new Future.value(FutureOr<String>( "-Lcj_KLDFuqdYuqdggkp" ) ;
 //          _qrcodeValue = new Future<String>.value("-Lcj_KLDFuqdYuqdggkp");
 //          TODO switch-on QRScanner
@@ -66,13 +67,11 @@ class _QRScanPageState extends State<QRScanPage> {
               .setHandlePermissions(true)
               .setExecuteAfterPermissionGranted(true)
               .scan();
+          String s= await _qrcodeValue;
           Navigator.push(
-              context,
-              MaterialPageRoute(
-//                builder: (context) => UserActionPage(qrCodeValue: this._qrcodeValue),
-//                builder: (context) =>  MaterialPageRoute(builder: (context) => LendingBook()),
-
-              ));
+            context,
+            MaterialPageRoute(builder: (context) => LendingBook(bookId: s),
+          ));
           },
         tooltip: 'Scan It',
         child: new Icon(Icons.camera_alt),

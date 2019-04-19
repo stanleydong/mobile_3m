@@ -16,10 +16,8 @@ final dummyBook = [
 ];
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-    final ScreenArguments args = ModalRoute.of(context).settings.arguments;
     return new MaterialApp(
       title: 'QRCode Reader Demo',
       home: new LendingBook(),
@@ -28,53 +26,34 @@ class MyApp extends StatelessWidget {
 }
 
 class LendingBook extends StatefulWidget {
+  LendingBook({Key key, @required this.bookId}) : super(key: key);
 
-
-  LendingBook({Key key, this.title}) : super(key: key);
-
-  final String title;
+  final String bookId;
 
   final Map<String, dynamic> pluginParameters = {};
 
+  Book ourbook;
   @override
   _LendingBookState createState() => new _LendingBookState();
 }
-class ScreenArguments {
-  final String title;
-  final String message;
 
-  ScreenArguments(this.title, this.message);
-}
 class _LendingBookState extends State<LendingBook> {
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: AppBar(title: Text('Baby Name Votes')),
-      body: _buildBody(context),
+      appBar: AppBar(title: Text("Proccess screen")),
+      body: _buildBody(context)
     );
   }
+
   Widget _buildBody(BuildContext context) {
     log('start query');
 
-    Firestore.instance.runTransaction((Transaction tx)  async {
-      await tx.set(
-          Firestore.instance.collection("histories").document(), {
-        "book": {
-          "author": "Hieu Ta",
-          "title": "Micro-services"
-        },
-        "borrowing_date": "April 11, 2019 at 12:00:00 PM UTC+7",
-        "user": {
-          "email": "kien.dinh@tyme.com",
-          "full_name": "Kien Dinh",
-          "phone_number": "0987654321"
-        }
-      });
-    });
-
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('user').where("id", isEqualTo: 'HI').snapshots(),
+      stream: Firestore.instance
+          .collection('items')
+          .where("id", isEqualTo: widget.bookId)
+          .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           log('blank data');
@@ -88,49 +67,132 @@ class _LendingBookState extends State<LendingBook> {
   }
 
   Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
-    return ListView(
+    DocumentSnapshot thisbook = snapshot.removeLast();
+    _buildListItem(context, thisbook);
+    Book newbook = widget.ourbook;
+    if(newbook.type.contains("shirt")) {
+      return new Container(
+        padding: new EdgeInsets.all(32.0),
+        child: new Center(
+          child: new Column(
+            children: <Widget>[
+              _buildListItem(context, thisbook),
+              new FlatButton(onPressed: () {
+                processItem("take");
+              }, child: new Text('Take'))
+
+            ],
+          ),
+        ),
+      );
+    } else {
+    return new Container(
+      padding: new EdgeInsets.all(32.0),
+      child: new Center(
+        child: new Column(
+          children: <Widget>[
+            _buildListItem(context, thisbook),
+            //dart treates everything as objects so we pass a function in onPressed value
+            new FlatButton(onPressed: () {
+              processItem("borrow");
+            }, child: new Text('Borrow')),
+            new FlatButton(onPressed: () {
+              processItem("return");
+            }, child: new Text('Return'))
+          ],
+        ),
+      ),
+    );
+    }
+      ListView(
       padding: const EdgeInsets.only(top: 20.0),
       children: snapshot.map((data) => _buildListItem(context, data)).toList(),
     );
+
+  }
+
+  void calculateWindow() {}
+  void processItem(String type) {
+    var now = new DateTime.now();
+    Book book = this.widget.ourbook;
+    Firestore.instance.runTransaction((Transaction tx) async {
+      await tx.set(Firestore.instance.collection("histories").document(), {
+        "user": {
+          "email": "test_user@tyme.com",
+          "id": 1,
+          "fullName": "Test User",
+          "phoneNumber": "0987654321"
+        },
+        "id": 2,
+        "item": {
+          "id": book.id,
+          "name": book.name,
+          "type": book.type,
+          "author": book.author,
+          "size": book.size,
+          "ownable": book.ownable
+        },
+        "action": type,
+        "createdDate": now,
+        "user_id": 1,
+        "item_id": book.id
+      });
+    });
   }
 
   Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
     final book = Book.fromSnapshot(data);
-
-    return Padding(
-      key: ValueKey(book.title),
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.circular(5.0),
+    widget.ourbook = book;
+    return Text(book.toString());/*
+     ListView(
+      // Center is a layout widget. It takes a single child and positions it
+      // in the middle of the parent.
+      children: <Widget>[
+        new ListTile(
+          title: new RaisedButton(
+              child: new Text("Borrow"),
+              onPressed: (){
+                processItem("borrow",book);
+              }),
         ),
-        child: ListTile(
-          title: Text(book.title),
-          trailing: Text(book.status),
-          onTap: () => print(book),
-        ),
-      ),
-    );
-
-}}
+      ],
+    );*/
+  }
+}
 
 class Book {
   final String id;
-  final String title;
-  final String status;
+  final String name;
+  final String type;
+  final String author;
+  final String size;
+  final bool ownable;
   final DocumentReference reference;
 
-  Book.fromMap(Map<String, dynamic> map, {this.reference} )
+  Book.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['id'] != null),
-        assert(map['title'] != null),
-        assert(map['status'] != null),
+        assert(map['name'] != null),
+        assert(map['type'] != null),
+        assert(map['author'] != null),
+        assert(map['size'] != null),
+        assert(map['ownable'] != null),
         id = map['id'],
-        title = map['title'],
-        status = map['status'];
+        name = map['name'],
+        type = map['type'],
+        author = map['author'],
+        size = map['size'],
+        ownable = map['ownable'];
 
   Book.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);
+
   @override
-  String toString() => "Book id:$id \n Title: $title \n Status: $status>";
+  String toString() {
+    String s = "";
+    if (name != "") s = s + "\n Name: " + name;
+    if (type != "") s = s + "\n Type: " + type;
+    if (author != "") s = s + "\n Author: " + author;
+    if (size != "") s = s + "\n Size: " + size;
+    return s;
+  }
 }
