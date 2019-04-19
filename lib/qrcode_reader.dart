@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:qrcode_reader/qrcode_reader.dart';
-import 'package:mobile_3m/user_action.dart';
+import 'package:mobile_3m/book.dart';
 
 class QRScanPage extends StatefulWidget {
   QRScanPage({Key key, this.qrCodeValue}) : super(key: key);
@@ -37,20 +37,24 @@ class _QRScanPageState extends State<QRScanPage> {
       floatingActionButton: new FloatingActionButton(
         onPressed: () {
 //          _qrcodeValue = new Future.value(FutureOr<String>( "-Lcj_KLDFuqdYuqdggkp" ) ;
-          _qrcodeValue = new Future<String>.value("-Lcj_KLDFuqdYuqdggkp");
+//          _qrcodeValue = new Future<String>.value("-Lcj_KLDFuqdYuqdggkp");
 //          TODO switch-on QRScanner
-//          _qrcodeValue = new QRCodeReader()
-//              .setAutoFocusIntervalInMs(200)
-//              .setForceAutoFocus(true)
-//              .setTorchEnabled(true)
-//              .setHandlePermissions(true)
-//              .setExecuteAfterPermissionGranted(true)
-//              .scan();
+          _qrcodeValue = new QRCodeReader()
+              .setAutoFocusIntervalInMs(200)
+              .setForceAutoFocus(true)
+              .setTorchEnabled(true)
+              .setHandlePermissions(true)
+              .setExecuteAfterPermissionGranted(true)
+              .scan();
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => UserActionPage(qrCodeValue: this._qrcodeValue),
-              ));
+            context,
+            MaterialPageRoute(builder: (context) => LendingBook()),
+          );
+//          Navigator.push(
+//              context,
+//              MaterialPageRoute(
+//                builder: (context) => UserActionPage(qrCodeValue: this._qrcodeValue),
+//              ));
           },
         tooltip: 'Scan It',
         child: new Icon(Icons.camera_alt),
