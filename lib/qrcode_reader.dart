@@ -1,15 +1,28 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:qrcode_reader/qrcode_reader.dart';
-import 'package:mobile_3m/book.dart';
+
+void main() {
+  runApp(new MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+      title: 'QRCode Reader Demo',
+      home: new QRScanPage(),
+    );
+  }
+}
 
 class QRScanPage extends StatefulWidget {
-  QRScanPage({Key key, this.qrCodeValue}) : super(key: key);
+  final String title;
+  final String valueUserName;
+  QRScanPage({Key key, this.title, this.valueUserName}) : super(key: key);
 
-  final String qrCodeValue;
-
-  final Map<String, dynamic> pluginParameters = {};
+  final Map<String, dynamic> pluginParameters = {
+  };
 
   @override
   _QRScanPageState createState() => new _QRScanPageState();
@@ -24,16 +37,23 @@ class _QRScanPageState extends State<QRScanPage> {
       appBar: new AppBar(
         title: const Text('Get ready'),
       ),
-      body: new Center(
-        child: new FutureBuilder<String>(
+
+      body: new ListView(
+        children: <Widget>[
+          new FutureBuilder<String>(
             future: _qrcodeValue,
             builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-              return new Text(snapshot.data != null
-                  ? snapshot.data
-                  : 'Scan it by press Scan button');
-            }),
-
-      ),
+              return new Text(snapshot.data != null ?
+                snapshot.data : 'Hello '+ ("${widget.valueUserName}") +' \nGet ready and tap Scan it',
+                  textAlign: TextAlign.center,style: Theme.of(context).textTheme.headline);
+          }),
+        ]),
+//          child: new FutureBuilder<String>(
+//              future: _qrcodeValue,
+//              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+////                print(controller.text);
+//                return new Text(snapshot.data != null ? snapshot.data : 'Get ready and tap Scan it' );
+//              })),
       floatingActionButton: new FloatingActionButton(
         onPressed: () {
 //          _qrcodeValue = new Future.value(FutureOr<String>( "-Lcj_KLDFuqdYuqdggkp" ) ;
@@ -47,14 +67,12 @@ class _QRScanPageState extends State<QRScanPage> {
               .setExecuteAfterPermissionGranted(true)
               .scan();
           Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => LendingBook()),
-          );
-//          Navigator.push(
-//              context,
-//              MaterialPageRoute(
+              context,
+              MaterialPageRoute(
 //                builder: (context) => UserActionPage(qrCodeValue: this._qrcodeValue),
-//              ));
+//                builder: (context) =>  MaterialPageRoute(builder: (context) => LendingBook()),
+
+              ));
           },
         tooltip: 'Scan It',
         child: new Icon(Icons.camera_alt),
