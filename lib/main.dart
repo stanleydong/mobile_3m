@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_3m/qrcode_reader.dart';
+import 'package:mobile_3m/book.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.amber,
       ),
       home: MyHomePage(title: 'Tyme Treasury'),
     );
@@ -100,7 +101,8 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => QRScanPage()),
+//            MaterialPageRoute(builder: (context) => QRScanPage()),
+            MaterialPageRoute(builder: (context) => Book()),
           );
         },
         tooltip: 'Next',

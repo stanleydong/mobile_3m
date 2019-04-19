@@ -2,35 +2,21 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:qrcode_reader/qrcode_reader.dart';
-
-void main() {
-  runApp(new MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: 'QRCode Reader Demo',
-      home: new QRScanPage(),
-    );
-  }
-}
+import 'package:mobile_3m/user_action.dart';
 
 class QRScanPage extends StatefulWidget {
-  QRScanPage({Key key, this.title}) : super(key: key);
+  QRScanPage({Key key, this.qrCodeValue}) : super(key: key);
 
-  final String title;
+  final String qrCodeValue;
 
-  final Map<String, dynamic> pluginParameters = {
-  };
+  final Map<String, dynamic> pluginParameters = {};
 
   @override
   _QRScanPageState createState() => new _QRScanPageState();
 }
 
 class _QRScanPageState extends State<QRScanPage> {
-  Future<String> _barcodeString;
+  Future<String> _qrcodeValue;
 
   @override
   Widget build(BuildContext context) {
@@ -39,23 +25,30 @@ class _QRScanPageState extends State<QRScanPage> {
         title: const Text('Get ready'),
       ),
       body: new Center(
-          child: new FutureBuilder<String>(
-              future: _barcodeString,
-              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-                return new Text(snapshot.data != null ? snapshot.data : '');
-              })),
+        child: new FutureBuilder<String>(
+            future: _qrcodeValue,
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              return new Text(snapshot.data != null
+                  ? snapshot.data
+                  : 'Scan it by press Scan button');
+            }),
+
+      ),
       floatingActionButton: new FloatingActionButton(
         onPressed: () {
-          setState(() {
-            _barcodeString = new QRCodeReader()
-                .setAutoFocusIntervalInMs(200)
-                .setForceAutoFocus(true)
-                .setTorchEnabled(true)
-                .setHandlePermissions(true)
-                .setExecuteAfterPermissionGranted(true)
-                .scan();
-          });
-        },
+          _qrcodeValue = new QRCodeReader()
+              .setAutoFocusIntervalInMs(200)
+              .setForceAutoFocus(true)
+              .setTorchEnabled(true)
+              .setHandlePermissions(true)
+              .setExecuteAfterPermissionGranted(true)
+              .scan();
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => UserActionPage(qrCodeValue: this._qrcodeValue),
+              ));
+          },
         tooltip: 'Scan It',
         child: new Icon(Icons.camera_alt),
       ),
