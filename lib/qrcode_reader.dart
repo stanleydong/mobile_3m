@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:qrcode_reader/qrcode_reader.dart';
+import 'package:mobile_3m/book.dart';
 
 void main() {
   runApp(new MyApp());
@@ -69,6 +70,7 @@ class _QRScanPageState extends State<QRScanPage> {
           Navigator.push(
               context,
               MaterialPageRoute(
+                  builder: (context) => LendingBook()
 //                builder: (context) => UserActionPage(qrCodeValue: this._qrcodeValue),
 //                builder: (context) =>  MaterialPageRoute(builder: (context) => LendingBook()),
 
