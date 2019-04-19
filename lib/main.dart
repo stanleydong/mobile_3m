@@ -96,11 +96,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     );
                     Navigator.of(context).push(route);
                   }
-                    else{
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => QRScanPage()),
+                  else{
+                    var route = new MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                      new QRScanPage(valueUserName: _textUserName.text),
                     );
+                    Navigator.of(context).push(route);
                   }
 //                  var route = new MaterialPageRoute(
 //                      builder: (BuildContext context) =>

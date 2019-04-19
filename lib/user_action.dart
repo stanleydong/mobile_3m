@@ -26,7 +26,7 @@ class _UserActionPageState extends State<UserActionPage> {
     return Scaffold(
       appBar: AppBar(
 //        TODO ___ this first !!!!!!!!!!!
-        title: Text("Got QR: " + QrCode),
+        title: Text("Got QR: " + ""),
       ),
       body: Center(
         child: Column(
@@ -48,7 +48,7 @@ class _UserActionPageState extends State<UserActionPage> {
   }
 
   Widget _buildScannedBook(BuildContext context, Map data) {
-    final book = _Book.fromMap(data);
+    final book = Book.fromMap(data);
 
     return Padding(
       key: ValueKey(book.title),
