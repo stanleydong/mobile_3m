@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_3m/qrcode_reader.dart';
 import 'package:mobile_3m/book.dart';
+import 'package:mobile_3m/admin.dart';
 
 void main() => runApp(MyApp());
 
@@ -46,19 +47,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-    });
-  }
-
+  TextEditingController controller = TextEditingController();
+  var _textUserName = new TextEditingController();
+  var _textPassword = new TextEditingController();
+  final bool obscureText = true;
   @override
   Widget build(BuildContext context) {
+
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -66,15 +61,60 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
+      appBar: new AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: new Text("Home Page"),
       ),
-      body: Center(
+      body: new ListView(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: Column(
+        children: <Widget>[
+          new TextFormField(
+              obscureText: false,
+              controller: _textUserName,// Use secure text for passwords.
+              decoration: new InputDecoration(
+                  hintText: 'User Name',
+                  labelText: 'Enter your user name',
+              )
+          ),
+          new TextFormField(
+              obscureText: true, // Use secure text for passwords.
+              decoration: new InputDecoration(
+                  hintText: 'Password',
+                  labelText: 'Enter your password'
+              )
+          ),
+
+          new ListTile(
+            title: new RaisedButton(
+                child: new Text("Next"),
+                onPressed: (){
+                  if(_textUserName.text == "admin"){
+                    var route = new MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                      new AdminPage(valueUserName: _textUserName.text),
+                    );
+                    Navigator.of(context).push(route);
+                  }
+                    else{
+                    var route = new MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                      new QRScanPage(valueUserName: _textUserName.text),
+                    );
+                    Navigator.of(context).push(route);
+                  }
+//                  var route = new MaterialPageRoute(
+//                      builder: (BuildContext context) =>
+//                        new QRScanPage(valueUserName: _textUserName.text),
+//                  );
+//                  Navigator.of(context).push(route);
+                }),
+          ),
+        ],
+//        child: Column(
+
+//        ),
           // Column is also layout widget. It takes a list of children and
           // arranges them vertically. By default, it sizes itself to fit its
           // children horizontally, and tries to be as tall as its parent.
@@ -89,20 +129,32 @@ class _MyHomePageState extends State<MyHomePage> {
           // center the children vertically; the main axis here is the vertical
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Hi @user\nYou have logged in', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline,
-            ),
-          ],
-        ),
+//          mainAxisAlignment: MainAxisAlignment.center,
+//          children: <Widget>[
+////            TextField(
+////            onChanged: (text) {
+////              value = text;
+////              },
+////              ),
+//            TextField(
+//              controller: _textController,
+//            ),
+//            Text(
+//              'Hi @user\nYou have logged in', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline,
+//            ),
+//          ],
+//        ),
       ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          controller.addListener(() {
+            // Do something here
+          });
           Navigator.push(
             context,
 //            MaterialPageRoute(builder: (context) => QRScanPage()),
-            MaterialPageRoute(builder: (context) => Book()),
+            MaterialPageRoute(builder: (context) => QRScanPage()),
           );
         },
         tooltip: 'Next',

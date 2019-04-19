@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:qrcode_reader/qrcode_reader.dart';
 
@@ -18,9 +17,9 @@ class MyApp extends StatelessWidget {
 }
 
 class QRScanPage extends StatefulWidget {
-  QRScanPage({Key key, this.title}) : super(key: key);
-
   final String title;
+  final String valueUserName;
+  QRScanPage({Key key, this.title, this.valueUserName}) : super(key: key);
 
   final Map<String, dynamic> pluginParameters = {
   };
@@ -31,19 +30,29 @@ class QRScanPage extends StatefulWidget {
 
 class _QRScanPageState extends State<QRScanPage> {
   Future<String> _qrcodeValue;
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
         title: const Text('Get ready'),
       ),
-      body: new Center(
-          child: new FutureBuilder<String>(
-              future: _qrcodeValue,
-              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-                return new Text(snapshot.data != null ? snapshot.data : 'Get ready and tap Scan it');
-              })),
+
+      body: new ListView(
+        children: <Widget>[
+          new FutureBuilder<String>(
+            future: _qrcodeValue,
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              return new Text(snapshot.data != null ?
+                snapshot.data : 'Hello '+ ("${widget.valueUserName}") +' \nGet ready and tap Scan it',
+                  textAlign: TextAlign.center,style: Theme.of(context).textTheme.headline);
+          }),
+        ]),
+//          child: new FutureBuilder<String>(
+//              future: _qrcodeValue,
+//              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+////                print(controller.text);
+//                return new Text(snapshot.data != null ? snapshot.data : 'Get ready and tap Scan it' );
+//              })),
       floatingActionButton: new FloatingActionButton(
         onPressed: () {
           _qrcodeValue = new QRCodeReader()
