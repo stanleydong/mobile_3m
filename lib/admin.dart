@@ -34,6 +34,10 @@ class _AdminPageState extends State<AdminPage> {
         length: 3,
         child: Scaffold(
           appBar: AppBar(
+            leading: new IconButton(
+              icon: new Icon(Icons.arrow_back),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
             bottom: TabBar(
               tabs: [
                 Tab(icon: Icon(Icons.book)),
@@ -43,12 +47,14 @@ class _AdminPageState extends State<AdminPage> {
             ),
             title: Text('Admin Page'),
           ),
-          body: TabBarView(
-            children: [
+          body: new Center(
+            child: new TabBarView(
+            children: <Widget>[
               Icon(Icons.book),
               Icon(Icons.bookmark),
               Icon(Icons.bookmark_border),
             ],
+          ),
           ),
         ),
       ),
